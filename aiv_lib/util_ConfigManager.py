@@ -1,6 +1,6 @@
 import os
 import shutil
-from util_gcp_secret_manager import get_secret_value
+from .util_gcp_secret_manager import get_secret_value
 import configparser
 
 def load_config():

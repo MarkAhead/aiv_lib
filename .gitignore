@@ -4,3 +4,4 @@
 __pycache__
 dist/
 aiv_lib.egg*/
+.DS_Store
