@@ -1,2 +1,5 @@
 /build
 /aiv_lib.egg-info
+.env.local
+__pycache__
+
