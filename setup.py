@@ -24,7 +24,6 @@ setup(
         'firebase_admin',
         'boto3',
         'torchvision',
-        'whisperx @ git+https://github.com/m-bain/whisperx.git',
     ],
     
     # If there are any package data files, specify them

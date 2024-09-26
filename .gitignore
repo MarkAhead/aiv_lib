@@ -2,5 +2,5 @@
 /aiv_lib.egg-info
 .env.local
 __pycache__
-
+dist/
 aiv_lib.egg*/
