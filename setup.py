@@ -11,19 +11,6 @@ setup(
     # url="...",
     
     install_requires=[
-        'aiobotocore',
-        'instagrapi',
-        'requests',
-        'flask',
-        'Pillow',
-        'moviepy',
-        'openai',
-        'elevenlabs',
-        'pygame',
-        'opencv-python',
-        'firebase_admin',
-        'boto3',
-        'torchvision',
     ],
     
     # If there are any package data files, specify them
