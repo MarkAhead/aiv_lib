@@ -1,6 +1,4 @@
-import json
 from google.cloud import secretmanager
-import os
 from google.auth import default
 
 
