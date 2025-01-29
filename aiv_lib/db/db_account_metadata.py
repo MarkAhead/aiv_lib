@@ -4,6 +4,35 @@ import random
 
 collection_name = "account_metadata"
 
+def create_account_document(document_name, account_id):
+    account_metadata = {
+        "document_name": document_name,
+        "username": account_id,
+        "last_posted": 0,
+        "next_post_time": 0,
+        "last_post_type": "",
+    }
+    doc_ref = db.collection(collection_name).document(document_name)
+    if doc_ref.get().exists:
+        print(f"Account document already exists for key: {document_name}")
+    else:
+        doc_ref.set(account_metadata)
+        
+def fetch_documents_from_collection():
+    try:
+        collection_ref = db.collection(collection_name)
+        documents = collection_ref.stream()
+        document_list = []
+        for doc in documents:
+            document_data = doc.to_dict()
+            document_data['id'] = doc.id  # Include document ID
+            document_list.append(document_data)
+        return document_list
+    except Exception as e:
+        print(f"Error fetching documents: {e}")
+        return []
+
+
 def fetch_last_post_timestamp(key):
     account = db.collection(collection_name).document(key)
     account_data = account.get().to_dict()

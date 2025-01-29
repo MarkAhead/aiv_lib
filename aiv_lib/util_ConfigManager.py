@@ -45,6 +45,10 @@ def empty_and_delete_directory(dir_path):
     else:
         print(f"The directory '{dir_path}' does not exist.")
 
+def set_openai_api_key():
+    api_key = get_config_value("openai_api_key")
+    os.environ["OPENAI_API_KEY"] = api_key
+
 def get_firestore_client():
     import firebase_admin
     from firebase_admin import firestore
@@ -55,7 +59,14 @@ def get_firestore_client():
     
     return db
 
-config_manager = load_config()
+config_manager = None
+
+def initialize():
+    global config_manager
+    config_manager = load_config()
+    set_openai_api_key()
+
+initialize()
 
 if __name__ == "__main__":
     print(get_config_value("output_folder"))

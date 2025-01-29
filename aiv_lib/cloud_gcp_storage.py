@@ -19,25 +19,25 @@ def parse_file_path(file_path):
     
     return bucket_name, folder_path, file_name
 
-def upload_blob(bucket_name, source_path, destination_path):
+def upload_blob(bucket_name, local_path, cloud_destination_path):
     """Uploads a file to the bucket."""
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(destination_path)
+    blob = bucket.blob(cloud_destination_path)
 
-    blob.upload_from_filename(source_path)
+    blob.upload_from_filename(local_path)
 
-    print(f"File {source_path} uploaded to {destination_path}.")
+    print(f"File {local_path} uploaded to {cloud_destination_path}.")
 
-def download_blob(bucket_name, source_blob_name, destination_file_name):
+def download_blob(bucket_name, local_path, destination_path):
     """Downloads a blob from the bucket."""
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(source_blob_name)
+    blob = bucket.blob(local_path)
 
-    blob.download_to_filename(destination_file_name)
+    blob.download_to_filename(destination_path)
 
-    print(f"Blob {source_blob_name} downloaded to {destination_file_name}.")
+    print(f"Blob {local_path} downloaded to {destination_path}.")
 
 def download_blob_with_remote_path(source_blob_path, local_bucket_path):
     """Downloads a blob from the bucket."""

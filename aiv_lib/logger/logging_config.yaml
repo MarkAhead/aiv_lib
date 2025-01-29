@@ -1,0 +1,25 @@
+version: 1
+formatters:
+  simple:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: simple
+    stream: ext://sys.stdout
+
+  gcp:
+    class: google.cloud.logging.handlers.CloudLoggingHandler
+    client: !!python/name:google.cloud.logging.Client
+    formatter: simple
+
+loggers:
+  my_project:
+    level: INFO
+    handlers: [console, gcp]
+    propagate: no
+
+root:
+  level: INFO
+  handlers: [console, gcp]

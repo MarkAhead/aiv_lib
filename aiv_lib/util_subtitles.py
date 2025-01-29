@@ -93,8 +93,7 @@ def convertSrtToWhisperOutput(srt_file):
 
     return output_data_array
 
-
-if __name__ == "__main__":
+def test_():
     test_data = [
         {
             "words": [
@@ -124,3 +123,9 @@ if __name__ == "__main__":
     segmented_data = segment_data_with_text(test_data, 3)  # Test with max_words_per_segment = 3
     for segment in segmented_data:
         print(segment)
+
+
+if __name__ == "__main__":
+    local_file = "/Users/yadubhushan/Downloads/phil_ceef23117b67cc9722ba88932fb04b6a7e7b9e125eb2fefa3af8fddaa9589a32_Social_18_mono.wav"
+    result = convertAudioToSubtitle(local_file)
+    print(result)
