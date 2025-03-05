@@ -29,15 +29,15 @@ def upload_blob(bucket_name, local_path, cloud_destination_path):
 
     print(f"File {local_path} uploaded to {cloud_destination_path}.")
 
-def download_blob(bucket_name, local_path, destination_path):
+def download_blob(bucket_name, cloud_path, local_file_path):
     """Downloads a blob from the bucket."""
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(local_path)
+    blob = bucket.blob(cloud_path)
 
-    blob.download_to_filename(destination_path)
+    blob.download_to_filename(local_file_path)
 
-    print(f"Blob {local_path} downloaded to {destination_path}.")
+    print(f"Blob {cloud_path} downloaded to {local_file_path}.")
 
 def download_blob_with_remote_path(source_blob_path, local_bucket_path):
     """Downloads a blob from the bucket."""

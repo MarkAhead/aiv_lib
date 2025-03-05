@@ -1,3 +1,4 @@
+from aiv_lib.db.model import ArtifactType, ArtifactState, ArtifactOrigin
 from .db_initialize import db
 import time
 from enum import Enum
@@ -5,37 +6,10 @@ from .common import get_hash_key, get_current_time
 
 collection_name = "existing_artifacts_workflow"
 ready_artifacts_collection_name = "ready_artifacts"
+
+
 current_state = "current_state"
-class ArtifactState(Enum):
-    INITIAL_ARTIFACT_CREATED = "INITIAL_ARTIFACT_CREATED"
-    AUDIO_CREATED = "AUDIO_CREATED"
-    IMAGE_TEXT_EXTRACTED = "IMAGE_TEXT_EXTRACTED"
-    TEXT_DATA_CREATED = "TEXT_DATA_CREATED"
-    SUBTITLE_DATA_CREATED = "SUBTITLE_DATA_CREATED"
-    MOVED_TO_READY_ARTIFACTS = "MOVED_TO_READY_ARTIFACTS"
-    
 
-class ArtifactType:
-    IMAGE = "image"
-    VIDEO = "video"
-    ZIP = "zip"
-
-    _EXTENSION_MAP = {
-        IMAGE: ('.jpg', '.jpeg', '.png'),
-        VIDEO: ('.mp4', '.avi', '.mov'),
-        ZIP: ('.zip', '.rar', '.7z')
-    }
-
-    @staticmethod
-    def get_artifact_type(location):
-        if not location:
-            return None
-        
-        location = location.lower()
-        for artifact_type, extensions in ArtifactType._EXTENSION_MAP.items():
-            if location.endswith(extensions):
-                return artifact_type
-        return None
     
 
 def create_new_artifact_document(location, category, bucket_name):
@@ -59,11 +33,18 @@ def create_new_artifact_document(location, category, bucket_name):
         "artifact_type": artifact_type,
         "artifact_location": location,
         "bucket_name": bucket_name,
+        "artifact_origin": ArtifactOrigin.EXISTING.value,
         current_state: ArtifactState.INITIAL_ARTIFACT_CREATED.value,
     }
     
     return push_existing_artifact_to_firestore(existing_artifact)
-    
+
+def update_existing_artifact_workflow_state(key, state):
+    doc_ref = db.collection(collection_name).document(key)
+    doc_ref.update({"current_state": state.value})
+    print(f"Updated state for key: {key} to {state.value}")
+    return key
+
 def push_existing_artifact_to_firestore(existing_artifact):
     # Generate the key if it is not present
     if existing_artifact.get("key") is None:
@@ -100,9 +81,9 @@ def fetch_specific_existing_artifact_data(key):
     return video_post_data
 
 
-def filter_existing_artifacts_by_state(current_state: ArtifactState):
+def filter_existing_artifacts_by_state(artifactState: ArtifactState):
     document_ref = db.collection(collection_name)
-    docs = document_ref.where(current_state, "==", current_state.value).stream()
+    docs = document_ref.where(current_state, "==", artifactState.value).stream()
     
     existing_artifacts_data = []
     for doc in docs:
@@ -127,7 +108,7 @@ def filter_existing_artifacts_by_state_and_type(current_state: ArtifactState, ar
     return existing_artifacts_data
 
 
-def add_text_data_to_existing_artifact(key, text_data):
+def add_text_and_subtitle_data_to_existing_artifact(key, text_data, subtitle_data):
     try:
         # Reference to the main artifact document
         artifact_doc_ref = db.collection(collection_name).document(key)
@@ -137,13 +118,19 @@ def add_text_data_to_existing_artifact(key, text_data):
         data = {"text_data": text_data}
         text_doc_ref.set(data)  # Save text data to the sub-collection
         
+        # Add subtitle data to the "subtitle_data" sub-collection
+        subtitle_doc_ref = artifact_doc_ref.collection("data").document("subtitle_data")
+        data = {"subtitle_data": subtitle_data}
+        subtitle_doc_ref.set(data)  # Save subtitle data to the sub-collection 
+        
         # Update the main document's state
         artifact_doc_ref.update({"current_state": ArtifactState.TEXT_DATA_CREATED.value})
-        print(f"Text data successfully added for key: {key}")
+        print(f"Text and subtitle data successfully added for key: {key}")
         return key
     except Exception as e:
-        print(f"Failed to add text data for key: {key}. Error: {e}")
+        print(f"Failed to add text and subtitle data for key: {key}. Error: {e}")
         return None
+
 
 def get_text_data_from_existing_artifact(key):
     try:
@@ -164,25 +151,15 @@ def get_text_data_from_existing_artifact(key):
         print(f"Failed to get text data for key: {key}. Error: {e}")
         return None
 
-def add_subtitle_data_to_existing_artifact(key, subtitle_data):
+def remove_text_data_and_subtitle_data_from_existing_artifact(key):
     try:
-        # Reference to the main artifact document
         artifact_doc_ref = db.collection(collection_name).document(key)
-        
-        # Add subtitle data to the "subtitle_data" sub-collection
-        subtitle_doc_ref = artifact_doc_ref.collection("data").document("subtitle_data")
-        data = {"subtitle_data": subtitle_data}
-        subtitle_doc_ref.set(data)  # Save subtitle data to the sub-collection
-        
-        # Update the main document's state
-        artifact_doc_ref.update({"current_state": ArtifactState.SUBTITLE_DATA_CREATED.value})
-        print(f"Subtitle data successfully added for key: {key}")
+        artifact_doc_ref.collection("data").document("text_data").delete()
+        artifact_doc_ref.collection("data").document("subtitle_data").delete()
         return key
     except Exception as e:
-        print(f"Failed to add subtitle data for key: {key}. Error: {e}")
+        print(f"Failed to remove text data for key: {key}. Error: {e}")
         return None
-
-
 def get_subtitle_data_from_existing_artifact(key):
     try:
         # Reference to the main artifact document
@@ -216,6 +193,8 @@ def move_to_ready_artifacts(key):
         # Extract artifact data
         artifact_data = artifact_snapshot.to_dict()
         artifact_data["current_state"] = ArtifactState.MOVED_TO_READY_ARTIFACTS.value
+        if artifact_data['artifact_origin'] is None:
+            artifact_data['artifact_origin'] = ArtifactOrigin.EXISTING.value
 
         # Get the category for the final destination
         category = artifact_data.get("category")
@@ -226,8 +205,6 @@ def move_to_ready_artifacts(key):
         # Define the new location for the artifact
         ready_artifact_ref = (
             db.collection(ready_artifacts_collection_name)
-            .document(category)
-            .collection("artifacts")
             .document(key)
         )
 

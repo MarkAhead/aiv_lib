@@ -2,8 +2,17 @@
 from faster_whisper import WhisperModel
 model_size = "large-v3"
 import numpy as np
+import os
+model_path = os.getenv("MODEL_PATH")
 
-model = WhisperModel(model_size, device="cpu", compute_type="int8")
+if not model_path:
+    print("MODEL_PATH is not set, using default model")
+    model = WhisperModel(model_size, device="cpu", compute_type="int8")
+else:
+    print(f"MODEL_PATH is set to {model_path}, using custom model")
+    model = WhisperModel(model_path, device="cpu", compute_type="int8")
+
+
 
 def convert_to_list(segments):
     segment_list = []
@@ -32,8 +41,9 @@ def convert_to_list(segments):
         text_data += segment.text + " "
     return segment_list, text_data
 
-def transcribe_audio(audio_file):
-    segments, info = model.transcribe(audio_file, beam_size=5, word_timestamps=True)
+def transcribe_audio(audio_file, language="en"):
+    print(f"Transcribing audio file: {audio_file} with language: {language}")
+    segments, info = model.transcribe(audio_file, beam_size=5, word_timestamps=True, language=language)
     return convert_to_list(segments)
 
 
