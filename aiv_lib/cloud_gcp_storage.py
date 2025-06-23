@@ -1,4 +1,5 @@
 import os
+import mimetypes
 from google.cloud import storage
 from .util_ConfigManager import get_config_value
 from urllib.parse import urlparse
@@ -19,15 +20,90 @@ def parse_file_path(file_path):
     
     return bucket_name, folder_path, file_name
 
+def get_content_type(file_path):
+    """
+    Determine the content type based on file extension.
+    
+    Args:
+        file_path (str): Path to the file
+        
+    Returns:
+        str: MIME type for the file
+    """
+    # Get the file extension
+    _, ext = os.path.splitext(file_path.lower())
+    
+    # Define content types for common asset types
+    content_type_map = {
+        '.mp3': 'audio/mpeg',
+        '.wav': 'audio/wav',
+        '.ogg': 'audio/ogg',
+        '.m4a': 'audio/mp4',
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.webp': 'image/webp',
+        '.mp4': 'video/mp4',
+        '.webm': 'video/webm',
+        '.mov': 'video/quicktime',
+        '.json': 'application/json',
+        '.txt': 'text/plain',
+        '.md': 'text/markdown'
+    }
+    
+    # Return specific content type or use mimetypes as fallback
+    content_type = content_type_map.get(ext)
+    if content_type:
+        return content_type
+    
+    # Use mimetypes library as fallback
+    content_type, _ = mimetypes.guess_type(file_path)
+    return content_type or 'application/octet-stream'
+
 def upload_blob(bucket_name, local_path, cloud_destination_path):
-    """Uploads a file to the bucket."""
-    storage_client = storage.Client()
-    bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(cloud_destination_path)
-
-    blob.upload_from_filename(local_path)
-
-    print(f"File {local_path} uploaded to {cloud_destination_path}.")
+    """
+    Uploads a file to the bucket with appropriate content type.
+    
+    Args:
+        bucket_name (str): Firebase Storage bucket name
+        local_path (str): Local file path to upload
+        cloud_destination_path (str): Destination path in cloud storage
+        
+    Raises:
+        Exception: If upload fails for any reason
+    """
+    try:
+        # Validate inputs
+        if not os.path.exists(local_path):
+            raise FileNotFoundError(f"Local file not found: {local_path}")
+        
+        if os.path.getsize(local_path) == 0:
+            raise ValueError(f"Local file is empty: {local_path}")
+        
+        # Initialize storage client and bucket
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(cloud_destination_path)
+        
+        # Determine and set content type
+        content_type = get_content_type(local_path)
+        blob.content_type = content_type
+        
+        # Upload the file
+        blob.upload_from_filename(local_path)
+        
+        print(f"File {local_path} uploaded to {cloud_destination_path} with content type {content_type}")
+        
+    except FileNotFoundError as e:
+        print(f"Upload failed - File not found: {e}")
+        raise
+    except ValueError as e:
+        print(f"Upload failed - Invalid file: {e}")
+        raise
+    except Exception as e:
+        print(f"Upload failed - Firebase Storage error: {e}")
+        raise
 
 def download_blob(bucket_name, cloud_path, local_file_path):
     """Downloads a blob from the bucket."""

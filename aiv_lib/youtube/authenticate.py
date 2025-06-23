@@ -15,6 +15,8 @@ SCOPES = [
     "https://www.googleapis.com/auth/youtube.readonly",
 ]
 CLIENT_SECRET_FILE = os.environ.get("YOUTUBE_PUBLISHER_DESKTOP_CRED")
+# if port is not set, use 8080
+port = int(os.environ.get("YOUTUBE_PUBLISHER_DESKTOP_PORT", 8080))
 
 
 def authenticate_account():
@@ -24,7 +26,8 @@ def authenticate_account():
     when registering a brand-new YouTube account.
     """
     flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
-    credentials = flow.run_local_server(port=8080)
+    print(f"Running local server on port {port}")
+    credentials = flow.run_local_server(port=port)
     return credentials
 
 def revalidate_credentials():

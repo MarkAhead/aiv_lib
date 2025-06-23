@@ -2,52 +2,79 @@ from elevenlabs import generate, save, set_api_key
 from .util_ConfigManager import get_config_value
 import requests
 
+VOICE_MAP = {
+    "Daniel": "Daniel",
+    "Markus": "Markus - Mature and Chill",
+    "Sally": "Sally - very realistic, super",
+    "Daksh": "Daksh - Suspenseful and Gripping Voice"
+}
 
 API_KEYS = [
-    get_config_value("ELEVEN_LABS_API_KEY_Family"),
+    get_config_value("eleven_labs_api_key_uday"),
 ]
 
 
+
+def generateHindiAudio(text, output_file):
+    return generateAudio(text, output_file, "Daksh")
+
 def generateMaleAudio(text, output_file):
-    audio = generate(
-        text = text,
-        voice="Markus - Mature and Chill",
-        model="eleven_multilingual_v2"
-    )
-    save(audio, output_file)
-    return audio
+    return generateAudio(text, output_file, "Markus")
+
 
 
 def generateFemaleAudio(text, output_file):
-    audio = generate(
-        text = text,
-        voice="Sally - very realistic, super",
-        model="eleven_multilingual_v2"
-    )
-    save(audio, output_file)
-    return audio
+    return generateAudio(text, output_file, "Sally")
 
 
-def generateAudio(text, output_file, voice = "Daniel"): 
+def generateAudio(text, output_file, voice = "Markus"): 
     valid_api_key = findValidApiKey(text)
     if valid_api_key:
         set_api_key(valid_api_key)
-        audio = generate(
-            text = text,
-            voice="Daniel",
-            model="eleven_multilingual_v2"
-        )
-        save(audio, output_file)
-        return audio
-    else:
-        print("No valid API key found.")
-        return None
+        return _generateAudio(text, output_file, voice)
+    return None
+
+def generateSoundEffects(effect_description, output_file, voice="Daniel"):
+    """
+    Generate sound effects using ElevenLabs TTS based on text description.
+    
+    Args:
+        effect_description (str): Text description of the sound effect (e.g., "door creaking", "rain falling")
+        output_file (str): Path where the generated audio file should be saved
+        voice (str): Voice to use for generating the effect (default: "Daniel")
+    
+    Returns:
+        audio: Generated audio data or None if failed
+    """
+    # Format the description for sound effect generation
+    formatted_text = f"Sound effect: {effect_description}"
+    
+    valid_api_key = findValidApiKey(formatted_text)
+    if valid_api_key:
+        set_api_key(valid_api_key)
+        return _generateAudio(formatted_text, output_file, voice)
+    return None
+
+def _generateAudio(text, output_file, voice = "Daniel"): 
+    if voice not in VOICE_MAP:
+        raise ValueError(f"Invalid voice: {voice}")
+    audio = generate(
+        text = text,
+        voice=VOICE_MAP[voice],
+        model="eleven_multilingual_v2"
+    )
+    save(audio, output_file)
+    return audio    
+
+
 
 def findValidApiKey(text):
     text_length = len(text)
     for api_key in API_KEYS:
+        
         if getAPIWithPendingLimit(api_key, text_length):
             return api_key
+    print("No valid API key found.")
     return None
 
 def getAPIWithPendingLimit(api_key, text_length):

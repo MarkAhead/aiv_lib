@@ -2,6 +2,7 @@ import uuid
 import requests
 import os
 
+from .util_ConfigManager import get_config_value
 
 
 PEXELS_API_KEY = get_config_value("PEXELS_API_KEY")

@@ -7,7 +7,7 @@ from datetime import timedelta
 collection_name = "account_metadata"
 
 def create_account_document(account_key, username, account_type: AccountType):
-    print(f"Creating account metadata document for key: {account_key}")
+    print(f"Creating or updating account metadata document for key: {account_key}")
     if not account_key:
         raise Exception("Account key is required")
     if not username:
@@ -16,8 +16,24 @@ def create_account_document(account_key, username, account_type: AccountType):
         raise Exception("Account type is required")
     
     doc_ref = db.collection(collection_name).document(account_key)
-    if doc_ref.get().exists:
-        print(f"Account document already exists for key: {account_key}")
+    doc_snapshot = doc_ref.get()
+    if doc_snapshot.exists:
+        # Account exists, check if username or account_type needs to be updated
+        account_metadata = doc_snapshot.to_dict()
+        updated = False
+        if account_metadata.get("username") != username:
+            print(f"Updating username for key: {account_key} from {account_metadata.get('username')} to {username}")
+            account_metadata["username"] = username
+            updated = True
+        if account_metadata.get("account_type") != account_type.value:
+            print(f"Updating account_type for key: {account_key} from {account_metadata.get('account_type')} to {account_type.value}")
+            account_metadata["account_type"] = account_type.value
+            updated = True
+        if updated:
+            doc_ref.set(account_metadata)
+            print(f"Updated account metadata document for key: {account_key}")
+        else:
+            print(f"Account document already exists for key: {account_key} with up-to-date username and account_type")
         return
     
     account_metadata = {
