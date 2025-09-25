@@ -61,21 +61,21 @@ def job_decorator(func):
         
         try:
             print(f"\n{service_name} - Executing {func.__name__}...")
-        result = func(*args, **kwargs)
-            
+            result = func(*args, **kwargs)
+
             # Service completion logging
             end_time = time.time()
             end_timestamp = datetime.now().isoformat()
             execution_duration = end_time - start_time
-            
+
             print(f"\n=== {service_name} - {func.__name__} COMPLETED SUCCESSFULLY ===")
             print(f"Service End Time: {end_timestamp}")
             print(f"Total Execution Duration: {use_appopriate_time_format(execution_duration)}")
             print(f"Service Result: {result}")
             print(f"🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 {service_name} - {func.__name__} SUCCESS 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑")
-            
-        return result
-            
+
+            return result
+
         except Exception as e:
             # Service failure logging
             end_time = time.time()

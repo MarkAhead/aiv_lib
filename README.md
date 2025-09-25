@@ -139,4 +139,21 @@ Below is a **curated inventory** of the most frequently used files.
 
 ---
 
-*Happy automating!*
+# External Requirements
+
+## Image Generation
+diffusers
+PIL
+torch
+torchvision
+transformers
+numpy
+torchaudio
+## Video Generation
+ffmpeg-python
+
+
+## Audio Generation
+elevenlabs
+edge-tts
+

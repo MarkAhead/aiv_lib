@@ -9,16 +9,26 @@ import time
 
 from .util_ConfigManager import get_config_value
 
+# IMPORTANT: Pixabay API Limitations
+# The Pixabay API only supports two endpoints:
+# 1. /api/ - for images (photos, illustrations, vectors)
+# 2. /api/videos/ - for videos
+# 
+# There is NO /api/music/ or audio endpoint available.
+# Audio-related functions in this module will return empty results and log warnings.
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 PIXABAY_API_KEY = get_config_value("PIXABAY_API_KEY")
 PIXABAY_BASE_URL = "https://pixabay.com/api/"
-PIXABAY_VIDEO_URL = urljoin(PIXABAY_BASE_URL, "videos/")
 
 class PixabayAPI:
-    """Optimized Pixabay API client with rate limiting and error handling."""
+    """Optimized Pixabay API client with rate limiting and error handling.
+    
+    Note: Pixabay API only supports images and videos. Audio/music endpoints are not available.
+    """
     
     BASE_URL = "https://pixabay.com/api/"
     
@@ -115,21 +125,15 @@ class PixabayAPI:
         result = self._make_request('videos/', params)
         return result.get('hits', [])
     
-    def search_audio(self, query: str, audio_type: str = "all", per_page: int = 20) -> List[Dict]:
-        """Search for music and sound effects."""
-        params = {
-            'q': query,
-            'audio_type': audio_type,  # "all", "music", "sound_effect"
-            'category': 'all',
-            'min_duration': 0,
-            'safesearch': 'true',
-            'order': 'popular',
-            'per_page': min(per_page, 200),
-            'pretty': 'false'
-        }
+    def search_audio(self, query: str, audio_type: str = "all", per_page: int = 20, max_duration: int = 10) -> List[Dict]:
+        """Search for music and sound effects.
         
-        result = self._make_request('music/', params)
-        return result.get('hits', [])
+        NOTE: The Pixabay API does not currently support audio/music search.
+        This method returns an empty list and logs a warning.
+        """
+        logger.warning("Pixabay API does not support audio/music search. The /api/music/ endpoint does not exist.")
+        logger.warning(f"Audio search requested for query: '{query}' but will return empty results.")
+        return []
 
 
 def download_images(download_dir: str, query: str, orientation: str = "all", 
@@ -235,97 +239,25 @@ def download_videos(download_dir: str, query: str, orientation: str = "all",
 
 
 def download_music(download_dir: str, query: str, max_downloads: int = 5) -> List[str]:
-    """Download music tracks with optimized settings."""
-    if not PIXABAY_API_KEY:
-        logger.error("PIXABAY_API_KEY not configured")
-        return []
+    """Download music tracks with optimized settings.
     
-    api = PixabayAPI()
-    music_tracks = api.search_audio(query, audio_type="music", per_page=max_downloads)
-    
-    if not music_tracks:
-        logger.warning(f"No music found for query: {query}")
-        return []
-    
-    download_dir = Path(download_dir)
-    downloaded_files = []
-    
-    def download_music_track(track_data):
-        """Download single music track."""
-        track_id = track_data['id']
-        # Get download URL
-        download_url = track_data.get('download_url')
-        
-        if not download_url:
-            return None
-        
-        # Create safe filename
-        safe_query = "".join(c for c in query if c.isalnum() or c in (' ', '-', '_')).rstrip()
-        filename = f"{safe_query}_{track_id}.mp3"
-        filepath = download_dir / filename
-        
-        if api._download_file(download_url, str(filepath)):
-            return str(filepath)
-        return None
-    
-    # Use ThreadPoolExecutor for concurrent downloads
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        future_to_track = {executor.submit(download_music_track, track): track for track in music_tracks}
-        
-        for future in as_completed(future_to_track):
-            filepath = future.result()
-            if filepath:
-                downloaded_files.append(filepath)
-    
-    logger.info(f"Downloaded {len(downloaded_files)} music tracks for query: {query}")
-    return downloaded_files
+    NOTE: The Pixabay API does not support music downloads.
+    This function will return an empty list and log a warning.
+    """
+    logger.warning("Pixabay API does not support music downloads. No music endpoint is available.")
+    logger.warning(f"Music download requested for query: '{query}' but Pixabay API only supports images and videos.")
+    return []
 
 
 def download_sound_effects(download_dir: str, query: str, max_downloads: int = 5) -> List[str]:
-    """Download sound effects with optimized settings."""
-    if not PIXABAY_API_KEY:
-        logger.error("PIXABAY_API_KEY not configured")
-        return []
+    """Download sound effects with optimized settings.
     
-    api = PixabayAPI()
-    sound_effects = api.search_audio(query, audio_type="sound_effect", per_page=max_downloads)
-    
-    if not sound_effects:
-        logger.warning(f"No sound effects found for query: {query}")
-        return []
-    
-    download_dir = Path(download_dir)
-    downloaded_files = []
-    
-    def download_sound_effect(effect_data):
-        """Download single sound effect."""
-        effect_id = effect_data['id']
-        # Get download URL
-        download_url = effect_data.get('download_url')
-        
-        if not download_url:
-            return None
-        
-        # Create safe filename
-        safe_query = "".join(c for c in query if c.isalnum() or c in (' ', '-', '_')).rstrip()
-        filename = f"{safe_query}_{effect_id}.mp3"
-        filepath = download_dir / filename
-        
-        if api._download_file(download_url, str(filepath)):
-            return str(filepath)
-        return None
-    
-    # Use ThreadPoolExecutor for concurrent downloads
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        future_to_effect = {executor.submit(download_sound_effect, effect): effect for effect in sound_effects}
-        
-        for future in as_completed(future_to_effect):
-            filepath = future.result()
-            if filepath:
-                downloaded_files.append(filepath)
-    
-    logger.info(f"Downloaded {len(downloaded_files)} sound effects for query: {query}")
-    return downloaded_files
+    NOTE: The Pixabay API does not support audio/sound effects downloads.
+    This function will return an empty list and log a warning.
+    """
+    logger.warning("Pixabay API does not support sound effects downloads. No audio endpoint is available.")
+    logger.warning(f"Sound effects download requested for query: '{query}' but Pixabay API only supports images and videos.")
+    return []
 
 
 

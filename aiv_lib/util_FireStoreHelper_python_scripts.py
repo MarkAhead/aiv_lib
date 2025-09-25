@@ -251,6 +251,40 @@ def update_work_activity_count(date):
 
     print(f"Updated work activity for date: {date}")
 
+def update_work_activity_count_by_delta(date, delta):
+    """
+    Adjust today's WORK activity count by a signed delta. Ensures count never goes below 0.
+
+    Args:
+        date (str): Date key for the 'activity_store' document.
+        delta (int): Signed change to apply to the WORK count (e.g., +1 or -1).
+    """
+    activity_store_ref = db.collection('activity_store').document(date)
+    activity_store_doc_snapshot = activity_store_ref.get()
+
+    if activity_store_doc_snapshot.exists:
+        activity_store_data = activity_store_doc_snapshot.to_dict()
+        activities = activity_store_data.get('activities', [])
+
+        work_activity = next((activity for activity in activities if activity['type'] == ActivityType.WORK), None)
+
+        if work_activity is None:
+            # If no WORK entry exists, create one only if delta is positive
+            if delta > 0:
+                activities.append({'type': ActivityType.WORK, 'count': delta})
+        else:
+            new_count = max(0, int(work_activity.get('count', 0)) + int(delta))
+            work_activity['count'] = new_count
+
+        activity_store_data['activities'] = activities
+        activity_store_ref.set(activity_store_data)
+    else:
+        # Create document only when delta would result in positive count
+        if delta > 0:
+            activity_store_ref.set({'activities': [{'type': ActivityType.WORK, 'count': int(delta)}], 'date': date})
+
+    print(f"Applied delta {delta} to work activity for date: {date}")
+
 def fetch_activity_count_by_date(activity_type, specific_date):
     """
     Fetches the count of a specified activity type from the 'activity_store' collection for a specific date.
