@@ -12,7 +12,7 @@
             "request": "launch",
             "program": "${file}",
             "justMyCode": false,
-            "envFile": "/Users/yadubhushan/Documents/workplace/repo/social_media_bot_functions/code/publisher_container/.env",
+            "envFile": "/Users/admin_user/Documents/workplace/repo/social_media_bot_functions/code/publisher_container/.env",
             "console": "integratedTerminal"
         }
     ]

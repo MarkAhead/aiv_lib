@@ -2,7 +2,7 @@ from moviepy.editor import VideoFileClip, CompositeVideoClip, ImageClip
 import numpy as np
 
 from PIL import Image, ImageDraw, ImageFont
-font_path = '/Users/yadubhushan/Documents/workplace/repo/social_media_bot_website/social_media_site/fonts/YoungSerif-Regular.ttf'
+font_path = '/Users/admin_user/Documents/workplace/repo/social_media_bot_website/social_media_site/fonts/YoungSerif-Regular.ttf'
 
 color_config = [
     {
@@ -246,8 +246,8 @@ from PIL import Image, ImageDraw, ImageFont
 from moviepy.editor import VideoFileClip, CompositeVideoClip, ImageClip
 
 # Load the video
-video_path = '/Users/yadubhushan/Downloads/20433217-hd_1920_1080_30fps.mp4'
-#video_path = '/Users/yadubhushan/Downloads/623064168.mp4'
+video_path = '/Users/admin_user/Downloads/20433217-hd_1920_1080_30fps.mp4'
+#video_path = '/Users/admin_user/Downloads/623064168.mp4'
 
 subtitle_config = {
     'font_size' : 40,

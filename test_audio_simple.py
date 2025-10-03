@@ -8,7 +8,7 @@ import os
 import tempfile
 
 # Add the aiv_lib path
-sys.path.insert(0, '/Users/yadubhushan/Documents/workplace/repo/aiv_lib')
+sys.path.insert(0, '/Users/admin_user/Documents/workplace/repo/aiv_lib')
 
 # Mock the configuration system to avoid GCP secrets
 class MockConfig:

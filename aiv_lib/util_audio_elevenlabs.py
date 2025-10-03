@@ -235,8 +235,8 @@ if __name__ == "__main__":
     if should_test_voice:
         print("Testing voice generation")
         text = "The quick brown fox jumps over the lazy dog."
-        generateAudio(text, "/Users/yadubhushan/Documents/media/python_space/output/temp/test2.mp3")
+        generateAudio(text, "/Users/admin_user/Documents/media/python_space/output/temp/test2.mp3")
     else:
         text = "A gunshot"
         print(f"Generating sound effect: {text}")
-        generateSoundEffects(text, "/Users/yadubhushan/Documents/media/python_space/output/temp/gunshot.mp3")
+        generateSoundEffects(text, "/Users/admin_user/Documents/media/python_space/output/temp/gunshot.mp3")

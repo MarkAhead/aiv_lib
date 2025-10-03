@@ -24,11 +24,11 @@ def log_environment_info():
     
     # Log key environment variables (mask sensitive ones)
     relevant_env_vars = [
+        'platform_key',
+        'which_config', 
         'GOOGLE_APPLICATION_CREDENTIALS',
-        'GOOGLE_CLOUD_PROJECT', 
-        'FIREBASE_BUCKET',
-        'ELEVENLABS_API_KEY',
-        'SERVICE_NAME'
+        'PYTHONPATH',
+        'MODEL_PATH'
     ]
     
     print(f"  Environment Variables:")

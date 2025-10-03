@@ -93,7 +93,7 @@ def get_best_size_image(search_term, output_folder, number_images_to_search=10, 
 
 
 if __name__ == "__main__":
-    posts_base_dir = "/Users/yadubhushan/Documents/media/python_space/resources/social/insta/bollywood"
+    posts_base_dir = "/Users/admin_user/Documents/media/python_space/resources/social/insta/bollywood"
     unique_folder_name = str(uuid.uuid4())
     output_folder = os.path.join(posts_base_dir, unique_folder_name)
     os.makedirs(output_folder, exist_ok=True)

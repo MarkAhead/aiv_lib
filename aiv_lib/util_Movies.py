@@ -15,7 +15,7 @@ relative_path = os.path.join(current_directory, '../util')
 # Get the absolute path
 full_path = os.path.abspath(relative_path)
 
-sys.path.insert(0, '/Users/yadubhushan/Documents/workplace/prod/python_scripts/util')
+sys.path.insert(0, '/Users/admin_user/Documents/workplace/prod/python_scripts/util')
 os.path.join(current_directory, '../util')
 import util_ConfigManager as ConfigManager
 from pydantic import parse_obj_as, HttpUrl
@@ -31,8 +31,8 @@ from langchain.agents import load_tools
 from . import util_google_api
 from . import util_audio_elevenlabs
 
-posts_base_dir = "/Users/yadubhushan/Documents/media/python_space/resources/social/insta/bot"
-font_loc = "/Users/yadubhushan/Documents/media/python_space/resources/font/Handlee-Regular.ttf"
+posts_base_dir = "/Users/admin_user/Documents/media/python_space/resources/social/insta/bot"
+font_loc = "/Users/admin_user/Documents/media/python_space/resources/font/Handlee-Regular.ttf"
 
 
 

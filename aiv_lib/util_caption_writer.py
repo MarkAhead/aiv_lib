@@ -7,7 +7,7 @@ from .util_ConfigManager import get_config_value
 
 caption_font_size = 50
 watermark_font_size = 24
-font_caption_path = "/Users/yadubhushan/Downloads/Salsa/Salsa-Regular.ttf"  # Replace with the path to your .ttf file
+font_caption_path = "/Users/admin_user/Downloads/Salsa/Salsa-Regular.ttf"  # Replace with the path to your .ttf file
 font_body = ImageFont.truetype(font_caption_path, caption_font_size)
 watermark_font = ImageFont.truetype(font_caption_path, watermark_font_size)
 
@@ -115,11 +115,11 @@ def runner():
 
     open_line  = "Guess the philosopher w"
  
-    save_caption_output = "/Users/yadubhushan/Documents/media/python_space/output/save_caption_output"
+    save_caption_output = "/Users/admin_user/Documents/media/python_space/output/save_caption_output"
     watermark = "tech.philosophy.school"
     output_file = os.path.join(save_caption_output, "caption_image.jpg")
     # Save the image
-    original_image = Image.open('/Users/yadubhushan/Documents/media/python_space/resources/images/philosophers/camus.png')
+    original_image = Image.open('/Users/admin_user/Documents/media/python_space/resources/images/philosophers/camus.png')
     caption = "A serious and good philosophical work could be written consisting entirely of jokes. "
     caption = caption 
     name = "Albert Camus"

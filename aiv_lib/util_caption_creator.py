@@ -96,8 +96,8 @@ def images_to_video(image_folder, video_output_file, fps=30, rotate = True):
 
     out.release()
 
-posts_base_dir = "/Users/yadubhushan/Documents/media/python_space/resources/social/insta/bollywood"
-font_loc = "/Users/yadubhushan/Documents/media/python_space/resources/font/Handlee-Regular.ttf"
+posts_base_dir = "/Users/admin_user/Documents/media/python_space/resources/social/insta/bollywood"
+font_loc = "/Users/admin_user/Documents/media/python_space/resources/font/Handlee-Regular.ttf"
 input_filepath = os.path.join(posts_base_dir, "Shahrukh.png.png")
 
 

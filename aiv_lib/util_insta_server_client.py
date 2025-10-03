@@ -51,12 +51,12 @@ def upload_to_server(caption, video_path=None, images_path=None, thumbnail=None,
 if __name__ == "__main__" :
     hashtags = "#Nietzsche #Nihilism #Philosophy #Existentialism #Ubermensch #Culture"
 
-    images_path = ['/Users/yadubhushan/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_0.jpg', 
-                '/Users/yadubhushan/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_1.jpg', 
-                '/Users/yadubhushan/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_2.jpg', 
-            '/Users/yadubhushan/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_3.jpg',
-                    '/Users/yadubhushan/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_4.jpg', 
-                    '/Users/yadubhushan/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_5.jpg']
+    images_path = ['/Users/admin_user/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_0.jpg', 
+                '/Users/admin_user/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_1.jpg', 
+                '/Users/admin_user/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_2.jpg', 
+            '/Users/admin_user/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_3.jpg',
+                    '/Users/admin_user/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_4.jpg', 
+                    '/Users/admin_user/Documents/media/python_space/output/caption_output/62c0c06d762d871d1fbaf3610cef7a360d1d6ff5c96919e2674b79661ac902e3/output_image_5.jpg']
     
     caption = "Join us as we navigate through the provocative yet enlightening philosophy of Nietzsche, his understanding of nihilism, and its implications for existential thought. Hold tight; we're about to question everything we know."
     caption = caption + "\n\n\n\n" + " " + hashtags

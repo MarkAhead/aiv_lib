@@ -3,7 +3,7 @@ from moviepy.editor import VideoFileClip, concatenate_videoclips, TextClip, Comp
 from sympy import im
 import os
 
-posts_base_dir = "/Users/yadubhushan/Documents/workplace/prod/python_scripts/"
+posts_base_dir = "/Users/admin_user/Documents/workplace/prod/python_scripts/"
 video_dir = "resources/social/insta/bollywood/659b1751-b275-4550-90ba-7163af9ea911"
 video_dir_path = os.path.join(posts_base_dir, video_dir)
 unique_file_name = str(uuid.uuid4())

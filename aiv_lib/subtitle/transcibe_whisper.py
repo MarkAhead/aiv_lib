@@ -48,7 +48,7 @@ def transcribe_audio(audio_file, language="en"):
 
 
 if __name__ == "__main__":
-    audio_file = "/Users/yadubhushan/Downloads/phil_ceef23117b67cc9722ba88932fb04b6a7e7b9e125eb2fefa3af8fddaa9589a32_Social_18_mono.wav"
+    audio_file = "/Users/admin_user/Downloads/phil_ceef23117b67cc9722ba88932fb04b6a7e7b9e125eb2fefa3af8fddaa9589a32_Social_18_mono.wav"
     segments, info = transcribe_audio(audio_file)
     for segment in segments:
         print(segment.text)

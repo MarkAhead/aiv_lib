@@ -126,6 +126,6 @@ def test_():
 
 
 if __name__ == "__main__":
-    local_file = "/Users/yadubhushan/Downloads/phil_ceef23117b67cc9722ba88932fb04b6a7e7b9e125eb2fefa3af8fddaa9589a32_Social_18_mono.wav"
+    local_file = "/Users/admin_user/Downloads/phil_ceef23117b67cc9722ba88932fb04b6a7e7b9e125eb2fefa3af8fddaa9589a32_Social_18_mono.wav"
     result = convertAudioToSubtitle(local_file)
     print(result)

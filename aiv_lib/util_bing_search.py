@@ -85,6 +85,6 @@ def get_best_image(search_term, output_folder):
 if __name__ == "__main__":
     output = get_best_image(
         "puppies",
-        "/Users/yadubhushan/Documents/media/python_space/resources/social/bing_images",
+        "/Users/admin_user/Documents/media/python_space/resources/social/bing_images",
     )
     print(f"Best Image Downloaded to: {output}")

@@ -17,8 +17,8 @@ from .util_ConfigManager import get_config_value
 from .util_gcp_secret_manager import  get_secret_value
 
 
-parent_dir = "/Users/yadubhushan/Documents/media/python_space/resources/social/insta"
-posts_base_dir = "/Users/yadubhushan/Documents/media/python_space/resources/social/insta/bollywood"
+parent_dir = "/Users/admin_user/Documents/media/python_space/resources/social/insta"
+posts_base_dir = "/Users/admin_user/Documents/media/python_space/resources/social/insta/bollywood"
 
 mode = 0o777
 
@@ -132,7 +132,7 @@ def upload_video_to_profile(client: Client, video_path, caption, hash_tags_list 
 
 
 if __name__ == "__main__":
-    video_path = '/Users/yadubhushan/Documents/media/python_space/resources/social/insta/tech_philosophy/f65f0990-4373-44b2-88cb-6bb3b0037381/video.mp4'
+    video_path = '/Users/admin_user/Documents/media/python_space/resources/social/insta/tech_philosophy/f65f0990-4373-44b2-88cb-6bb3b0037381/video.mp4'
     caption = 'Delve deep into the unique insights of the philosopher Arthur Schopenhauer. Discover how his views on life and existence might stimulate your thoughts 🤔💭 #SchopenhauerWisdom #KeenInsights \n \n \n \n #SchopenhauerWisdom, #KeenInsights, #Philosophy, #LifeInterpretations'
     #uploadToTechPhilosophyInsta(caption=caption, video_path = video_path)
 

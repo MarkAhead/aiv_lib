@@ -178,7 +178,7 @@ def generateImageWithExistingCharacter(existing_image_path, output_file_path, pr
 
 if __name__ == "__main__":
     output_folder = os.getenv("output_folder")
-    existing_image_path = "/Users/yadubhushan/Downloads/2e30ef20-ef76-4ebd-b9f0-13b541140e34.jpeg"
+    existing_image_path = "/Users/admin_user/Downloads/2e30ef20-ef76-4ebd-b9f0-13b541140e34.jpeg"
     
     # Test with different quality levels
     print("Testing LQ quality:")
