@@ -19,7 +19,7 @@ except ImportError:
 
 # Voice mappings for edge-tts
 EDGE_TTS_VOICES = {
-    "Christopher": "en-US-ChristopherNeural",
+    "Christopher": "en-US-AriaNeural",
     "Brian": "en-US-BrianNeural", 
 }
 
@@ -36,7 +36,7 @@ __all__ = [
 # Main Generation Functions
 # -----------------------------
 
-def generateAudioByPrompt(output_file: str, text: str, voice: str = "Alice", quality: ArtifactQuality | str | None = None):
+def generateAudioByPrompt(output_file: str, text: str, voice: str = "Christopher", quality: ArtifactQuality | str | None = None):
     """Generate speech using edge-tts or mock tone.
 
     Parameters

@@ -59,7 +59,7 @@ def generateImageByPrompt(output_file, prompt, quality=None):
       - a centered "scanner" rectangle outlined in the inverse color
       - the prompt in bold, as large as possible, in the inverse color (multi-line)
     """
-    if quality != ArtifactQuality.MOCK:
+    if quality != ArtifactQuality.MOCK and quality != ArtifactQuality.LQ:
         raise ValueError(f"Unsupported quality level: {quality}")
 
     # 1) Pick a random background color and its inverse
